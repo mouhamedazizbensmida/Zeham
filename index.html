@@ -6,7 +6,7 @@
   <title>Zé-Ham - Boutique officielle</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;500&family=Lobster&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
+<style>
    body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
@@ -285,77 +285,77 @@ body::before {
     }
   </style>
 </head>
-<script src="lang.js"></script>
+<script src="lang.js" defer></script>
 <body>
-    <div id="header-placeholder" style="z-index: 1000;"></div>
+  <div id="header-placeholder" style="z-index: 1000;"></div>
 
   <section class="hero" id="accueil">
     <div class="fade-slider">
-      <img src="Design sans titre (411).png" class="slide" alt="Image de fond 1" />
-      <img src="2.png" class="slide" alt="Image de fond 2" />
-      <img src="3.png" class="slide" alt="Image de fond 3" />
-      <img src="4.png" class="slide" alt="Image de fond 4" />
+      <img src="Design sans titre (411).png" class="slide" alt="Image de fond 1" loading="eager" fetchpriority="high" />
+      <img src="2.png" class="slide" alt="Image de fond 2" loading="lazy" />
+      <img src="3.png" class="slide" alt="Image de fond 3" loading="lazy" />
+      <img src="4.png" class="slide" alt="Image de fond 4" loading="lazy" />
       <div class="fixed-caption">Explorez l'univers Zé-Ham</div>
     </div>
   </section>
 
   <section class="products" id="produits">
     <div class="product">
-      <img src="101.png" alt="T-shirt Zé-Ham Modèle Astronaute">
+      <img src="101.png" alt="T-shirt Zé-Ham Modèle Astronaute" loading="lazy">
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt1"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="100.png" alt="T-shirt Zé-Ham Modèle Jaww El-Sif">
+      <img src="100.png" alt="T-shirt Zé-Ham Modèle Jaww El-Sif" loading="lazy">
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt2"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="102.png" alt="T-shirt Zé-Ham Modèle Shark">
+      <img src="102.png" alt="T-shirt Zé-Ham Modèle Shark" loading="lazy">
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt3"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="samorain.png" alt="T-shirt Zé-Ham avec logo">
+      <img src="samorain.png" alt="T-shirt Zé-Ham avec logo" loading="lazy">
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt4"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="42.png" alt="T-shirt Zé-Ham">
+      <img src="42.png" alt="T-shirt Zé-Ham" loading="lazy">
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt5"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="pcn.png" alt="T-shirt Zé-Ham">
+      <img src="pcn.png" alt="T-shirt Zé-Ham" loading="lazy">
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt6"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="samorain.png" alt="T-shirt Zé-Ham">
+      <img src="samorain.png" alt="T-shirt Zé-Ham" loading="lazy">
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt7"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="samorain.png" alt="T-shirt Zé-Ham">
+      <img src="samorain.png" alt="T-shirt Zé-Ham" loading="lazy">
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt8"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="samorain.png" alt="T-shirt Zé-Ham">
+      <img src="samorain.png" alt="T-shirt Zé-Ham" loading="lazy">
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt9"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="samorain.png" alt="T-shirt Zé-Ham">
+      <img src="samorain.png" alt="T-shirt Zé-Ham" loading="lazy">
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt10"><button>Voir modèle</button></a>
@@ -396,27 +396,22 @@ body::before {
       .then(res => res.text())
       .then(data => {
         document.getElementById('header-placeholder').innerHTML = data;
-        // AFTER injecting, then load the header's scripts
+
         const script = document.createElement('script');
         script.src = 'header-script.js';
         document.body.appendChild(script);
+
+        const lang = localStorage.getItem('lang') || 'fr';
+        applyLanguage(lang);
       });
 
-    // Hero section caption animation
-    document.addEventListener('DOMContentLoaded', function() {
+    // Hero caption animation
+    document.addEventListener('DOMContentLoaded', function () {
       const fixedCaption = document.querySelector('.fixed-caption');
-      // Ensure the caption becomes active only after the script loads
-      // This timeout might not be strictly necessary if CSS handles initial state, but keeps original behavior
-      setTimeout(function() {
-        if (fixedCaption) { // Add a check to ensure element exists
-          fixedCaption.classList.add('active');
-        }
-      }, 1500);
+      setTimeout(() => fixedCaption?.classList.add('active'), 1500);
     });
 
-    // Product card scroll animation
-    const productCards = document.querySelectorAll('.product');
-
+    // Product animation
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -424,27 +419,9 @@ body::before {
           observer.unobserve(entry.target);
         }
       });
-    }, {
-      threshold: 0.1
-    });
+    }, { threshold: 0.1 });
 
-    productCards.forEach(card => {
-      observer.observe(card);
-    });
-    fetch('header.html')
-  .then(res => res.text())
-  .then(data => {
-    document.getElementById('header-placeholder').innerHTML = data;
-
-    const script = document.createElement('script');
-    script.src = 'header-script.js';
-    document.body.appendChild(script);
-
-    // AJOUT ICI : Langue par défaut (ou depuis localStorage)
-    const lang = localStorage.getItem('lang') || 'fr';
-    applyLanguage(lang);
-  });
-
+    document.querySelectorAll('.product').forEach(card => observer.observe(card));
   </script>
 </body>
 </html>

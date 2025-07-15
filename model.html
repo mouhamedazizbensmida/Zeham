@@ -6,6 +6,32 @@
   <title>Détail Produit - Zé-Ham</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;500&family=Lobster&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Placeholder for preload main image -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const produit = params.get("produit");
+    const preloadImages = {
+      tshirt1: "astrob.png",
+      tshirt2: "jawwb.png",
+      tshirt3: "sharkb.png",
+      tshirt4: "samoraib.png",
+      tshirt5: "robotb.png",
+      tshirt6: "pcb.png",
+      tshirt7: "robotb.png",
+      tshirt8: "robotb.png",
+      tshirt9: "robotb.png",
+      tshirt10: "robotb.png"
+    };
+    if (preloadImages[produit]) {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = preloadImages[produit];
+      document.head.appendChild(link);
+    }
+  </script>
+
   <style>
     :root {
       --primary-color: #102f68;
@@ -18,28 +44,25 @@
     }
 
     body {
-        margin: 0;
-    padding-top: 8vw;
-    font-family: 'Roboto', sans-serif;
-    /* background: var(--background-color); This will be the solid background color */
-    color: var(--text-color);
-    position: relative; /* Crucial for positioning the pseudo-element */
-    z-index: 1; /* Ensures body content stays above the background pseudo-element */
-    /* If you still want the ZehamLogo.png as a background image with opacity,
-       it needs to go into a pseudo-element or a separate container. */
-}
+      margin: 0;
+      padding-top: 8vw;
+      font-family: 'Roboto', sans-serif;
+      color: var(--text-color);
+      position: relative;
+      z-index: 1;
+    }
 
-body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--background-color) no-repeat center center / cover; /* Your image with all background properties */
-    opacity: 0.25; /* Apply opacity only to the background image */
-    z-index: -1; /* Puts this layer behind the actual body content */
-}
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--background-color) no-repeat center center / cover;
+      opacity: 0.25;
+      z-index: -1;
+    }
 
     .product-detail {
       padding: 2rem;
@@ -66,15 +89,11 @@ body::before {
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       aspect-ratio: 1/1;
       object-fit: contain;
-      background: url('arrierplant.png');
-      background-size: cover;           /* pour que l'image remplisse tout */
-      background-position: center;      /* centrée */
-      background-repeat: no-repeat;     /* ne pas répéter l'image */
+      background: url('arrierplant.png') center/cover no-repeat;
       height: 60vh;
     }
 
     .thumbnails {
-
       display: flex;
       gap: 0.8rem;
       margin-top: 1rem;
@@ -83,8 +102,7 @@ body::before {
     }
 
     .thumbnail {
-    padding: 0.5vw !important;
-    
+      padding: 0.5vw !important;
       width: 60px;
       height: 60px;
       border-radius: 5px;
@@ -92,13 +110,11 @@ body::before {
       cursor: pointer;
       border: 2px solid transparent;
       transition: all 0.2s ease;
+      border: 1px solid var(--primary-color);
     }
 
     .thumbnail:hover, .thumbnail.active {
       border-color: var(--secondary-color) !important;
-    }
-    .thumbnail {
-      border: 1px solid var(--primary-color);
     }
 
     .product-info {
@@ -239,19 +255,17 @@ body::before {
     @media (max-width: 780px) {
       body {
         padding-top: 80px;
-        
         --background-color: url(ggggg.png);
       }
-      
+
       .product-images, .product-info {
         min-width: 100%;
       }
-      
+
       .thumbnails {
-        
         justify-content: center;
       }
-      
+
       .product-title {
         font-size: 1.8rem;
       }
@@ -260,13 +274,12 @@ body::before {
 </head>
 <body>
   <div id="header-placeholder"></div>
-
   <main class="product-detail">
     <div id="product-container"></div>
   </main>
 
   <footer id="contact">
-    <div  class="footer-content">
+    <div class="footer-content">
       <div class="footer-section">
         <h3>Contactez-nous</h3>
         <p><i class="fas fa-envelope"></i> aminebensmida46@gmail.com</p>
@@ -293,7 +306,6 @@ body::before {
       </div>
     </div>
   </footer>
-
 <script>
     // Product data
 const products = {
