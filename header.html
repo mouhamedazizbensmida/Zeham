@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar & Sidebar Logic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;500&family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Body padding is handled by index.html */
+
+        /* Header (Navbar) Styles */
+        header {
+            background: #102f68;
+            color: #FFD700;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            box-sizing: border-box;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.2rem;
+            margin: 0;
+            flex: 1; /* Allows the title to grow */
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex: 2; /* Allows nav to take more space */
+            margin-right: 200px; /* Pushes content away from language selector */
+        }
+
+        nav a {
+            font-family: 'Lobster', cursive;
+            text-decoration: none;
+            color: #FFD700;
+            font-size: 1.2rem;
+            white-space: nowrap;
+            margin: 0 2rem;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            transform: translateY(-3px);
+            text-shadow: 0 2px 5px rgba(255, 215, 0, 0.5);
+        }
+
+        .Active {
+            text-decoration: underline !important;
+        }
+
+        /* Language Selector Styles */
+        .language-selector {
+            position: relative;
+            display: inline-block;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            flex: 0 0 auto; /* Prevents it from shrinking */
+            margin-left: auto; /* Pushes it to the right */
+            z-index: 100;
+        }
+
+        .selected {
+            width: 1.5cm;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            background-color: #FFD700;
+            border-radius: 4px;
+            color: #102f68;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .selected:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .flag {
+            width: 20px;
+            height: 15px;
+            object-fit: cover;
+        }
+
+        .select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 5px;
+            padding: 0;
+            list-style: none;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+            min-width: 100%;
+            display: none;
+            animation: fadeIn 0.3s ease-out; /* Added fade-in animation for dropdown */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .select-options.show {
+            display: block;
+        }
+
+        .select-options li {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            white-space: nowrap;
+            color: #102f68;
+            transition: all 0.2s ease;
+        }
+
+        .select-options li:hover {
+            background-color: #f0f0f0;
+            transform: translateX(5px);
+        }
+
+        .select-options li.active {
+            background-color: #FFD700;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            background: #102f68;
+            color: #FFD700;
+            z-index: 1000;
+            transform: translateX(-100%); /* Initially hidden */
+            transition: transform 0.3s ease;
+            display: none; /* Hidden by default, shown by media query */
+        }
+
+        .sidebar.active {
+            transform: translateX(0); /* Shown when active */
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-toggle {
+            background: #102f68;
+            color: #FFD700;
+            border: none;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            display: flex; /* Always display in header, but hidden on desktop via media query */
+            justify-content: center;
+            align-items: center;
+            z-index: 1001; /* Above sidebar */
+            order: -1; /* Positions it at the start of flex items */
+            margin-right: 1rem;
+        }
+
+        .sidebar-content {
+            padding: 20px;
+            height: 100%; /* Ensure content fills sidebar height */
+            box-sizing: border-box; /* Include padding in height calculation */
+        }
+
+        .sidebar-header {
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .sidebar-header h3 {
+            margin: 0;
+            font-family: 'Lobster', cursive;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            color: #FFD700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Overlay for when sidebar is active */
+        body.sidebar-active::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* Dim effect */
+            z-index: 999; /* Below sidebar, above content */
+            pointer-events: auto; /* Allows clicking on overlay to close sidebar */
+        }
+        
+        /* Responsive Adjustments */
+        @media (min-width: 831px) {
+            .sidebar {
+                display: none; /* Hide sidebar on larger screens */
+            }
+            .sidebar-toggle {
+                display: none; /* Hide sidebar toggle on larger screens */
+            }
+            body.sidebar-active {
+                overflow-x: auto; /* Allow horizontal scroll if needed */
+            }
+            header h1 {
+                text-align: left; /* Align title left on desktop */
+            }
+        }
+
+        @media (max-width: 830px) {
+            .nav-container {
+                display: none; /* Hide main navigation on small screens */
+            }
+            .sidebar {
+                display: block; /* Show sidebar on small screens */
+                width: 200px; /* Adjusted width for tablets/phones */
+            }
+            header {
+                flex-direction: row; /* Keep elements in a row */
+                justify-content: space-between; /* Space out elements */
+                padding: 1rem; /* Adjust padding for smaller screens */
+            }
+            header h1 {
+                font-size: 1.8rem;
+                flex-grow: 1; /* Allow h1 to take available space */
+                text-align: center; /* Center h1 on smaller screens */
+            }
+            .language-selector {
+                margin-left: 0; /* Remove auto margin, let flex handle positioning */
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3 id="sidebarTitle">Menu</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html#accueil"><i class="fas fa-home"></i> Accueil</a></li>
+                <li><a href="index.html#produits"><i class="fas fa-tshirt"></i> Produits</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <header>
+        <button class="sidebar-toggle" aria-label="Toggle Navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h1 id="navbarTitle">Zé-Ham</h1>
+        <div class="nav-container">
+            <nav>
+                <!-- <a href="index.html#accueil" class="Active">Accueil</a> -->
+                 <a href="index.html#accueil" >Accueil</a>
+                <a href="index.html#produits">Produits</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+        <!-- Langue Icon: -->
+        <div class="language-selector">
+            <div class="selected">
+                <img src="https://flagcdn.com/fr.svg" alt="Français" class="flag">
+                <span>Fr</span>
+            </div>
+            <ul class="select-options" id="languageOptions">
+                <li class="active" data-lang="fr">
+                    <img src="https://flagcdn.com/fr.svg" alt="Français" class="flag"> Fr
+                </li>
+                <li data-lang="en">
+                    <img src="https://flagcdn.com/gb.svg" alt="English" class="flag"> Ang
+                </li>
+            </ul>
+        </div>
+    </header>
+
+</body>
+</html>

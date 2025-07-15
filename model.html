@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détail Produit - Zé-Ham</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;500&family=Lobster&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #102f68;
+      --secondary-color: #FFD700;
+      --background-color: url(ggg.png);
+      --text-color: #333;
+      --background-size: cover;
+      --background-position: center;
+      --background-repeat: no-repeat;
+    }
+
+    body {
+        margin: 0;
+    padding-top: 8vw;
+    font-family: 'Roboto', sans-serif;
+    /* background: var(--background-color); This will be the solid background color */
+    color: var(--text-color);
+    position: relative; /* Crucial for positioning the pseudo-element */
+    z-index: 1; /* Ensures body content stays above the background pseudo-element */
+    /* If you still want the ZehamLogo.png as a background image with opacity,
+       it needs to go into a pseudo-element or a separate container. */
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--background-color) no-repeat center center / cover; /* Your image with all background properties */
+    opacity: 0.25; /* Apply opacity only to the background image */
+    z-index: -1; /* Puts this layer behind the actual body content */
+}
+
+    .product-detail {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product-layout {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .product-images {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+    }
+
+    .main-image {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      aspect-ratio: 1/1;
+      object-fit: contain;
+      background: url('arrierplant.png');
+      background-size: cover;           /* pour que l'image remplisse tout */
+      background-position: center;      /* centrée */
+      background-repeat: no-repeat;     /* ne pas répéter l'image */
+      height: 60vh;
+    }
+
+    .thumbnails {
+
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .thumbnail {
+    padding: 0.5vw !important;
+    
+      width: 60px;
+      height: 60px;
+      border-radius: 5px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .thumbnail:hover, .thumbnail.active {
+      border-color: var(--secondary-color) !important;
+    }
+    .thumbnail {
+      border: 1px solid var(--primary-color);
+    }
+
+    .product-info {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+    }
+
+    .product-title {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+
+    .product-description {
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .option-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .option-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .color-options {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .color-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .color-btn.active {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+
+    .size-options {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .size-option {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--primary-color);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .size-option:hover, .size-option.selected {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.8rem 1.5rem;
+      background: var(--primary-color);
+      color: var(--secondary-color);
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: var(--secondary-color);
+      color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    footer {
+      background: var(--primary-color);
+      color: var(--secondary-color);
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-section {
+      flex: 1;
+      min-width: 250px;
+      margin: 1rem;
+      text-align: center;
+    }
+
+    .footer-section h3 {
+      font-family: 'Lobster', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .social-link {
+      color: var(--secondary-color);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: scale(1.2);
+      color: white;
+    }
+
+    @media (max-width: 780px) {
+      body {
+        padding-top: 80px;
+        
+        --background-color: url(ggggg.png);
+      }
+      
+      .product-images, .product-info {
+        min-width: 100%;
+      }
+      
+      .thumbnails {
+        
+        justify-content: center;
+      }
+      
+      .product-title {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+
+  <main class="product-detail">
+    <div id="product-container"></div>
+  </main>
+
+  <footer id="contact">
+    <div  class="footer-content">
+      <div class="footer-section">
+        <h3>Contactez-nous</h3>
+        <p><i class="fas fa-envelope"></i> aminebensmida46@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +216 28337677</p>
+      </div>
+      <div class="footer-section">
+        <h3>Suivez-nous</h3>
+        <div class="social-links">
+          <a href="https://facebook.com" class="social-link" target="_blank" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3>Informations</h3>
+        <p>&copy; 2025 Zé-Ham. Tous droits réservés.</p>
+        <p>
+          <a href="#" style="color: var(--secondary-color)">Mentions légales</a> | 
+          <a href="#" style="color: var(--secondary-color)">CGV</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+<script>
+    // Product data
+const products = {
+  tshirt1: {
+    name: "T-shirt Zé-Ham Modèle Astronaute",
+    price: "60 dt",
+    description: "T-shirt 100% coton avec un design d'astronaute original.",
+    colors: {
+      blanc: ["astrob.png", "astrob1.png", "astrob2.png"],
+      noir: ["astron.png", "astron1.png", "astron2.png"],
+      gris: ["astrog.png", "astrog1.png", "astrog2.png"]
+    },
+    sizes: ["S", "M", "L", "XL"]
+  },
+  tshirt2: {
+    name: "T-shirt Zé-Ham Modèle Jaww El-Sif",
+    price: "60 dt",
+    description: "T-shirt 100% coton avec un design Jaww El-Sif original.",
+    colors: {
+      blanc: ["jawwb.png", "jawwb1.png", "jawwb2.png"],
+      noir: ["jawwn.png", "jawwn1.png", "jawwn2.png"],
+      gris: ["jawwg.png", "jawwg1.png", "jawwg2.png"]
+    },
+    sizes: ["S", "M", "L", "XL"]
+  },
+  tshirt3: {
+    name: "T-shirt Zé-Ham Modèle Shark",
+    price: "60 dt",
+    description: "T-shirt orné d'un design original Shark, stylé et percutant",
+    colors: {
+      blanc: ["sharkb.png", "sharkb1.png", "sharkb2.png"],
+      noir: ["sharkn.png", "sharkn1.png", "sharkn2.png"],
+      gris: ["sharkg.png", "sharkg1.png", "sharkg2.png"]
+    },
+    sizes: ["S", "M", "L", "XL"]
+  },
+  tshirt4: {
+    name: "T-shirt Zé-Ham avec logo",
+    price: "60 dt",
+    description: "T-shirt orné d’un design original Samouraï, élégant et puissant.",
+    colors: {
+      blanc: ["samoraib.png", "samouraib1.png", "samouraib2.png"],
+      noir: ["samorain.png", "samourain1.png", "samourain2.png"],
+      gris: ["samoraig.png", "samouraig1.png", "samouraig2.png"]
+    },
+    sizes: ["S", "M", "L", "XL"]
+  }, 
+  tshirt5: {
+    name: "T-shirt Zé-Ham avec logo",
+    price: "60 dt",
+    description: "T-shirt illustré d’un Robot stylisé, parfait pour un look urbain et branché.",
+    colors: {
+      blanc: ["robotb.png", "robotb1.png", "robotb2.png"],
+      noir: ["robotn.png", "robotn1.png", "robotn2.png"],
+      gris: ["robotg.png", "robotg1.png", "robotg2.png"]
+    },
+    sizes: ["S", "M", "L", "XL"]
+  },
+  tshirt6: {
+    name: "T-shirt Zé-Ham avec logo",
+    price: "60 dt",
+    description: "T-shirt minimaliste avec un design 'Erreur 404 - Not Found', parfait pour les amateurs de tech et d'ironie digitale.",
+    colors: {
+      blanc: ["pcb.png", "pcb1.png", "pcb2.png"],
+      noir: ["pcn.png", "pcn1.png", "pcn2.png"],
+      gris: ["pcg.png", "pcg1.png", "pcg2.png"]
+    },
+    sizes: ["S", "M", "L", "XL"]
+  },
+  tshirt7: {
+    name: "T-shirt Zé-Ham avec logo",
+    price: "60 dt",
+    description: "T-shirt 100% coton avec le logo Zé-Ham.",
+    colors: {
+      blanc: ["robotb.png", "robotb1.png", "robotb2.png"],
+      noir: ["robotn.png", "robotn1.png", "robotn2.png"],
+      gris: ["robotg.png", "robotg1.png", "robotg2.png"]
+    },
+    sizes: ["S", "M", "L", "XL"]
+  },
+  tshirt8: {
+    name: "T-shirt Zé-Ham avec logo",
+    price: "60 dt",
+    description: "T-shirt 100% coton avec le logo Zé-Ham.",
+    colors: {
+      blanc: ["robotb.png", "robotb1.png", "robotb2.png"],
+      noir: ["robotn.png", "robotn1.png", "robotn2.png"],
+      gris: ["robotg.png", "robotg1.png", "robotg2.png"]
+    },
+    sizes: ["S", "M", "L", "XL"]
+  },
+  tshirt9: {
+    name: "T-shirt Zé-Ham avec logo",
+    price: "60 dt",
+    description: "T-shirt 100% coton avec le logo Zé-Ham.",
+    colors: {
+      blanc: ["robotb.png", "robotb1.png", "robotb2.png"],
+      noir: ["robotn.png", "robotn1.png", "robotn2.png"],
+      gris: ["robotg.png", "robotg1.png", "robotg2.png"]
+    },
+    sizes: ["S", "M", "L", "XL"]
+  },
+  tshirt10: {
+    name: "T-shirt Zé-Ham avec logo",
+    price: "60 dt",
+    description: "T-shirt 100% coton avec le logo Zé-Ham.",
+    colors: {
+      blanc: ["robotb.png", "robotb1.png", "robotb2.png"],
+      noir: ["robotn.png", "robotn1.png", "robotn2.png"],
+      gris: ["robotg.png", "robotg1.png", "robotg2.png"]
+    },
+    sizes: ["S", "M", "L", "XL"]
+  }
+};
+
+// DOM elements
+const headerPlaceholder = document.getElementById('header-placeholder');
+const productContainer = document.getElementById('product-container');
+
+// --- Main Page Initialization ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Load the header.html content.
+    // The .then() ensures the subsequent code runs only after header.html is loaded.
+    loadHeader().then(() => {
+        // Dynamically load header-script.js AFTER header.html content is in the DOM.
+        // This script contains the logic for the sidebar and navbar (e.g., toggle, language).
+        const script = document.createElement('script');
+        script.src = 'header-script.js';
+        document.body.appendChild(script);
+
+        // Now that the header and its associated script are loaded,
+        // proceed with loading the product details for this page.
+        loadProduct();
+
+        // Attach event listeners for size options, ensuring they exist after product rendering.
+        // This targets the size options rendered by renderProduct().
+        document.querySelectorAll('.size-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.size-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+    })
+    .catch(error => {
+        console.error('Error in main DOMContentLoaded sequence:', error);
+    });
+});
+
+
+// Load header content with Promise
+function loadHeader() {
+    return fetch('header.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(html => {
+            if (headerPlaceholder) { // Check if placeholder exists before using it
+                headerPlaceholder.innerHTML = html;
+            }
+        })
+        .catch(error => {
+            console.error('Error loading header:', error);
+            if (headerPlaceholder) {
+                headerPlaceholder.innerHTML = '<p style="color: red; text-align: center;">Failed to load header.</p>';
+            }
+            throw error; // Propagate the error so the .then() chain is broken
+        });
+}
+
+// Load product based on URL parameter
+function loadProduct() {
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get("produit");
+  
+  if (!productId || !products[productId]) {
+    if (productContainer) { // Check if container exists
+      productContainer.innerHTML = `
+        <div class="error-message">
+          <p>Produit introuvable.</p>
+          <a href="https://www.facebook.com/" class="back-btn">Passer une commande maintenant</a>
+        </div>
+      `;
+    }
+    return;
+  }
+
+  renderProduct(products[productId]);
+}
+
+// Render product details
+function renderProduct(product) {
+  const firstColor = Object.keys(product.colors)[0];
+  const images = product.colors[firstColor];
+
+  if (productContainer) { // Check if container exists before rendering
+    productContainer.innerHTML = `
+      <div class="product-layout">
+        <div class="product-images">
+          <img class="main-image" src="${images[0]}" alt="${product.name}">
+          <div class="thumbnails" id="thumbnails-container">
+            ${images.map((img, index) => `
+              <img class="thumbnail ${index === 0 ? 'active' : ''}" 
+                   src="${img}" 
+                   alt="Thumbnail ${index + 1}"
+                   onclick="changeMainImage('${img}')">
+            `).join('')}
+          </div>
+        </div>
+        
+        <div class="product-info">
+          <h1 class="product-title">${product.name}</h1>
+          <p class="product-price">${product.price}</p>
+          <p class="product-description">${product.description}</p>
+          
+          <div class="option-section">
+            <h3 class="option-title">Couleurs disponibles :</h3>
+            <div class="color-options" id="color-options">
+              ${Object.keys(product.colors).map(color => `
+                <button class="color-btn ${color === firstColor ? 'active' : ''}" 
+                        style="background: ${getColorValue(color)}; color: ${color.toLowerCase() === 'noir' ? 'white' : 'inherit'}; border: 1px solid #ccc;">
+                  ${color}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+          
+          <div class="option-section">
+            <h3 class="option-title">Tailles disponibles :</h3>
+            <div class="size-options">
+              ${product.sizes.map(size => `
+                <span class="size-option">${size}</span>
+              `).join('')}
+            </div>
+          </div>
+          
+          <a href="https://www.facebook.com/" class="back-btn">Passer une commande maintenant</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // Add click listeners to color buttons *after* they are rendered
+  const colorButtons = document.querySelectorAll('.color-btn');
+  colorButtons.forEach(btn => {
+      // Use a data attribute to store the color key, if the button text isn't sufficient
+      // Or, better, bind the data directly:
+      const colorKey = btn.textContent.trim().toLowerCase();
+      const imagesForColor = product.colors[colorKey];
+      if (imagesForColor) {
+          btn.addEventListener('click', () => changeColor(colorKey, imagesForColor));
+      }
+  });
+}
+
+// Helper function to get color value for styling
+function getColorValue(color) {
+  const colorMap = {
+    blanc: '#ffffff',
+    noir: '#000000',
+    rouge: '#ff0000',
+    bleu: '#0000ff',
+    vert: '#00ff00'
+  };
+  return colorMap[color.toLowerCase()] || '#cccccc';
+}
+
+// Change main image when thumbnail is clicked
+function changeMainImage(src) {
+  const mainImage = document.querySelector('.main-image');
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  
+  if (mainImage) {
+      mainImage.src = src;
+  }
+  
+  thumbnails.forEach(thumb => {
+    thumb.classList.remove('active');
+    // Use endsWith to handle potential full paths vs just filenames
+    // This is more robust than exact === comparison if paths differ (e.g., absolute vs relative)
+    if (thumb.src.endsWith(src) || thumb.src.includes(src.split('/').pop())) {
+      thumb.classList.add('active');
+    }
+  });
+}
+
+// Change color option
+function changeColor(color, images) {
+  const mainImage = document.querySelector('.main-image');
+  const colorButtons = document.querySelectorAll('.color-btn');
+  const thumbnailsContainer = document.getElementById('thumbnails-container');
+  
+  // Update active color button
+  colorButtons.forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.textContent.trim().toLowerCase() === color.toLowerCase()) {
+      btn.classList.add('active');
+    }
+  });
+  
+  
+  if (mainImage) {
+      mainImage.src = images[0];
+  }
+  
+  if (thumbnailsContainer) {
+      thumbnailsContainer.innerHTML = images.map((img, index) => `
+        <img class="thumbnail ${index === 0 ? 'active' : ''}" 
+              src="${img}" 
+              alt="Thumbnail ${index + 1}"
+              onclick="changeMainImage('${img}')">
+      `).join('');
+  }
+}
+
+window.changeMainImage = changeMainImage;
+window.changeColor = changeColor;
+</script>
+</body>
+</html>
