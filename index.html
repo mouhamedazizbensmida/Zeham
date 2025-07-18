@@ -7,27 +7,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;500&family=Lobster&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-   body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    color: #333;
-    padding-top: 80px; /* Adjust this value based on your header's actual height */
-    position: relative; /* Needed for pseudo-element positioning */
-    z-index: 1; /* Ensures content is above the pseudo-element */
-}
+   :root {
+      --primary-color: #102f68;
+      --secondary-color: #FFD700;
+      --background-color: url(assets/images/ggggg.webp);
+      --text-color: #333;
+    }
 
-body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url(assets/images/ggggg.webp) no-repeat center center / cover;;
-    /* background: url(ZehamLogo.webp) no-repeat center center / cover; Combined background properties */
-    opacity: 0.25; /* Apply opacity only to the pseudo-element */
-    z-index: -1; /* Place the pseudo-element behind the content */
-}
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      color: var(--text-color);
+      padding-top: 80px; /* Adjust this value based on your header's actual height */
+      position: relative; /* Needed for pseudo-element positioning */
+      z-index: 1; /* Ensures content is above the pseudo-element */
+      overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--background-color) no-repeat center center / cover;
+      opacity: 0.25; /* Apply opacity only to the pseudo-element */
+      z-index: -1; /* Place the pseudo-element behind the content */
+    }
 
     .hero {
       height: 88vh;
@@ -74,7 +81,7 @@ body::before {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: #FFD700;
+      color: var(--secondary-color);
       font-size: 3rem;
       font-family: 'Pacifico', cursive;
       text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
@@ -122,6 +129,7 @@ body::before {
       opacity: 0;
       transform: translateY(30px);
       transition: all 0.6s ease-out;
+      position: relative; /* Needed for positioning the loader overlay */
     }
 
     .product.visible {
@@ -137,11 +145,54 @@ body::before {
     .product img {
       max-width: 100%;
       border-radius: 8px;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, filter 0.3s ease-in-out; /* Added filter transition */
+    }
+
+    .product img.loading {
+      filter: blur(5px);
     }
 
     .product:hover img {
       transform: scale(1.05);
+    }
+
+    .product-image-wrapper {
+        position: relative;
+        overflow: hidden; /* Ensures the image doesn't overflow rounded corners */
+        border-radius: 8px;
+    }
+
+    .product-loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 8px;
+        z-index: 2; /* Above the image, below product text */
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+    }
+
+    .product-loading-overlay.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .product-loading-overlay .loader-icon {
+        font-size: 2rem;
+        color: var(--primary-color);
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 
     .product h3 {
@@ -150,11 +201,11 @@ body::before {
     }
 
     .product:hover h3 {
-      color: #102f68;
+      color: var(--primary-color);
     }
 
     .product button {
-      background: #102f68;
+      background: var(--primary-color);
       color: #f7f7f7;
       padding: 0.5rem 1rem;
       border: none;
@@ -165,14 +216,14 @@ body::before {
     }
 
     .product button:hover {
-      background: #FFD700;
-      color: #102f68;
+      background: var(--secondary-color);
+      color: var(--primary-color);
       transform: scale(1.05);
     }
 
     footer {
-      background: #102f68;
-      color: #FFD700;
+      background: var(--primary-color);
+      color: var(--secondary-color);
       padding: 2rem 1rem;
       margin-top: 2rem;
       font-family: 'Roboto', sans-serif;
@@ -209,7 +260,7 @@ body::before {
       font-family: 'Lobster', cursive;
       font-size: 1.5rem;
       margin-bottom: 1rem;
-      color: #FFD700;
+      color: var(--secondary-color);
     }
 
     .footer-section p {
@@ -228,7 +279,7 @@ body::before {
     }
 
     .social-icons a {
-      color: #FFD700;
+      color: var(--secondary-color);
       font-size: 1.5rem;
       transition: transform 0.3s;
     }
@@ -239,7 +290,7 @@ body::before {
     }
 
     footer a {
-      color: #FFD700;
+      color: var(--secondary-color);
       text-decoration: none;
     }
 
@@ -257,10 +308,6 @@ body::before {
       body {
         margin: 0;
         font-family: 'Roboto', sans-serif;
-        /* background: url(ggggg.webp); */
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
            
       }
       .hero {
@@ -301,43 +348,78 @@ body::before {
 
   <section class="products" id="produits">
     <div class="product">
-      <img src="assets/images/101.webp" alt="T-shirt Zé-Ham Modèle Astronaute" loading="lazy">
+        <div class="product-image-wrapper">
+            <div class="product-loading-overlay visible">
+                <i class="fas fa-spinner loader-icon"></i>
+            </div>
+            <img src="assets/images/101.webp" alt="T-shirt Zé-Ham Modèle Astronaute" loading="lazy" class="loading">
+        </div>
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt1"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="assets/images/100.webp" alt="T-shirt Zé-Ham Modèle Jaww El-Sif" loading="lazy">
+        <div class="product-image-wrapper">
+            <div class="product-loading-overlay visible">
+                <i class="fas fa-spinner loader-icon"></i>
+            </div>
+            <img src="assets/images/100.webp" alt="T-shirt Zé-Ham Modèle Jaww El-Sif" loading="lazy" class="loading">
+        </div>
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt2"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="assets/images/102.webp" alt="T-shirt Zé-Ham Modèle Shark" loading="lazy">
+        <div class="product-image-wrapper">
+            <div class="product-loading-overlay visible">
+                <i class="fas fa-spinner loader-icon"></i>
+            </div>
+            <img src="assets/images/102.webp" alt="T-shirt Zé-Ham Modèle Shark" loading="lazy" class="loading">
+        </div>
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt3"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="assets/images/samorain.webp" alt="T-shirt Zé-Ham avec logo" loading="lazy">
+        <div class="product-image-wrapper">
+            <div class="product-loading-overlay visible">
+                <i class="fas fa-spinner loader-icon"></i>
+            </div>
+            <img src="assets/images/samorain.webp" alt="T-shirt Zé-Ham avec logo" loading="lazy" class="loading">
+        </div>
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt4"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="assets/images/42.webp" alt="T-shirt Zé-Ham" loading="lazy">
+        <div class="product-image-wrapper">
+            <div class="product-loading-overlay visible">
+                <i class="fas fa-spinner loader-icon"></i>
+            </div>
+            <img src="assets/images/42.webp" alt="T-shirt Zé-Ham" loading="lazy" class="loading">
+        </div>
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt5"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="assets/images/pcn.webp" alt="T-shirt Zé-Ham" loading="lazy">
+        <div class="product-image-wrapper">
+            <div class="product-loading-overlay visible">
+                <i class="fas fa-spinner loader-icon"></i>
+            </div>
+            <img src="assets/images/pcn.webp" alt="T-shirt Zé-Ham" loading="lazy" class="loading">
+        </div>
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt6"><button>Voir modèle</button></a>
     </div>
     <div class="product">
-      <img src="assets/images/samorain.webp" alt="T-shirt Zé-Ham" loading="lazy">
+        <div class="product-image-wrapper">
+            <div class="product-loading-overlay visible">
+                <i class="fas fa-spinner loader-icon"></i>
+            </div>
+            <img src="assets/images/samorain.webp" alt="T-shirt Zé-Ham" loading="lazy" class="loading">
+        </div>
       <h3>T-shirt Zé-Ham</h3>
       <p>60 dt</p>
       <a href="model.html?produit=tshirt7"><button>Voir modèle</button></a>
@@ -391,9 +473,38 @@ body::before {
     document.addEventListener('DOMContentLoaded', function () {
       const fixedCaption = document.querySelector('.fixed-caption');
       setTimeout(() => fixedCaption?.classList.add('active'), 1500);
+
+        // Initialize product image loading
+        const productImages = document.querySelectorAll('.product img');
+        productImages.forEach(img => {
+            const wrapper = img.closest('.product-image-wrapper');
+            const overlay = wrapper ? wrapper.querySelector('.product-loading-overlay') : null;
+
+            if (img && overlay) {
+                // Add loading class initially
+                img.classList.add('loading');
+                overlay.classList.add('visible');
+
+                // Check if image is already cached
+                if (img.complete) {
+                    img.classList.remove('loading');
+                    overlay.classList.remove('visible');
+                } else {
+                    img.onload = () => {
+                        img.classList.remove('loading');
+                        overlay.classList.remove('visible');
+                    };
+                    img.onerror = () => {
+                        console.error('Error loading image:', img.src);
+                        img.classList.remove('loading');
+                        overlay.classList.remove('visible'); // Hide loader even on error
+                    };
+                }
+            }
+        });
     });
 
-    // Product animation
+    // Product animation (Intersection Observer)
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
