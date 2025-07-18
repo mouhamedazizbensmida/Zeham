@@ -78,6 +78,7 @@
       flex: 1;
       min-width: 300px;
       max-width: 500px;
+      position: relative; /* Added for spinner and blur positioning */
     }
 
     .main-image {
@@ -88,6 +89,45 @@
       object-fit: contain;
       background: url('assets/images/arrierplant.webp') center/cover no-repeat;
       height: 60vh;
+      transition: filter 0.3s ease-in-out; /* Smooth transition for blur */
+    }
+
+    /* Styles for the loading state */
+    .main-image.loading {
+        filter: blur(5px); /* Blur the image when loading */
+    }
+
+    .image-loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white overlay */
+        border-radius: 10px;
+        z-index: 10; /* Ensure it's above the image */
+        opacity: 0; /* Hidden by default */
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none; /* Allows clicks to pass through when hidden */
+    }
+
+    .image-loading-overlay.visible {
+        opacity: 1; /* Visible when loading */
+        pointer-events: auto; /* Re-enable pointer events when visible */
+    }
+
+    .image-loading-overlay .loader-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        animation: spin 1s linear infinite; /* Spin animation for the loader */
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 
     .thumbnails {
@@ -519,7 +559,10 @@ function renderProduct(product) {
     productContainer.innerHTML = `
       <div class="product-layout">
         <div class="product-images">
-          <img class="main-image" src="${images[0]}" alt="${product.name}" fetchpriority="high">
+            <div class="image-loading-overlay visible" id="main-image-loader">
+                <i class="fas fa-spinner loader-icon"></i>
+            </div>
+          <img class="main-image loading" id="main-product-image" src="${images[0]}" alt="${product.name}" fetchpriority="high">
           <div class="thumbnails" id="thumbnails-container">
             ${images.map((img, index) => `
               <img class="thumbnail ${index === 0 ? 'active' : ''}" 
@@ -560,6 +603,21 @@ function renderProduct(product) {
         </div>
       </div>
     `;
+
+    // Event listener for main image loading
+    const mainImage = document.getElementById('main-product-image');
+    const imageLoader = document.getElementById('main-image-loader');
+    if (mainImage && imageLoader) {
+        mainImage.onload = () => {
+            mainImage.classList.remove('loading');
+            imageLoader.classList.remove('visible');
+        };
+        // In case the image is already cached or loads very fast
+        if (mainImage.complete) {
+            mainImage.classList.remove('loading');
+            imageLoader.classList.remove('visible');
+        }
+    }
   }
 
   // Add click listeners to color buttons *after* they are rendered
@@ -589,12 +647,22 @@ function getColorValue(color) {
 
 // Change main image when thumbnail is clicked
 function changeMainImage(src) {
-  const mainImage = document.querySelector('.main-image');
+  const mainImage = document.getElementById('main-product-image'); // Use ID for direct access
   const thumbnails = document.querySelectorAll('.thumbnail');
+  const imageLoader = document.getElementById('main-image-loader');
   
-  if (mainImage) {
-      mainImage.src = src;
-      mainImage.fetchpriority = 'high'; // Prioritize the newly active main image
+  if (mainImage && imageLoader) {
+    // Show loading state before changing the source
+    mainImage.classList.add('loading');
+    imageLoader.classList.add('visible');
+
+    // Set onload to remove loading state once new image loads
+    mainImage.onload = () => {
+        mainImage.classList.remove('loading');
+        imageLoader.classList.remove('visible');
+    };
+    mainImage.src = src;
+    mainImage.fetchpriority = 'high'; // Prioritize the newly active main image
   }
   
   thumbnails.forEach(thumb => {
@@ -609,9 +677,10 @@ function changeMainImage(src) {
 
 // Change color option
 function changeColor(color, images) {
-  const mainImage = document.querySelector('.main-image');
+  const mainImage = document.getElementById('main-product-image'); // Use ID for direct access
   const colorButtons = document.querySelectorAll('.color-btn');
   const thumbnailsContainer = document.getElementById('thumbnails-container');
+  const imageLoader = document.getElementById('main-image-loader');
   
   // Update active color button
   colorButtons.forEach(btn => {
@@ -622,7 +691,16 @@ function changeColor(color, images) {
   });
   
   
-  if (mainImage) {
+  if (mainImage && imageLoader) {
+    // Show loading state before changing the source
+    mainImage.classList.add('loading');
+    imageLoader.classList.add('visible');
+
+    // Set onload to remove loading state once new image loads
+    mainImage.onload = () => {
+        mainImage.classList.remove('loading');
+        imageLoader.classList.remove('visible');
+    };
       mainImage.src = images[0];
       mainImage.fetchpriority = 'high'; // Prioritize the new main image on color change
   }
