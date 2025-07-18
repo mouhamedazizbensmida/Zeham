@@ -7,8 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;500&family=Lobster&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  <!-- Placeholder for preload main image -->
-  <script>
+    <script>
     const params = new URLSearchParams(window.location.search);
     const produit = params.get("produit");
     const preloadImages = {
@@ -18,16 +17,13 @@
       tshirt4: "assets/images/samoraib.webp",
       tshirt5: "assets/images/robotb.webp",
       tshirt6: "assets/images/pcb.webp",
-      tshirt7: "assets/images/robotb.webp",
-      tshirt8: "assets/images/robotb.webp",
-      tshirt9: "assets/images/robotb.webp",
-      tshirt10: "assets/images/robotb.webp"
     };
     if (preloadImages[produit]) {
       const link = document.createElement('link');
       link.rel = 'preload';
       link.as = 'image';
       link.href = preloadImages[produit];
+      link.fetchpriority = 'high'; // Suggest high priority for preload
       document.head.appendChild(link);
     }
   </script>
@@ -50,6 +46,7 @@
       color: var(--text-color);
       position: relative;
       z-index: 1;
+      overflow-x: hidden; /* Prevent horizontal scroll due to animations */
     }
 
     body::before {
@@ -252,6 +249,19 @@
       color: white;
     }
 
+    /* Fade-in Animation Styles */
+    .fade-in-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      will-change: opacity, transform; /* Optimize for animation performance */
+    }
+
+    .fade-in-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     @media (max-width: 780px) {
       body {
         padding-top: 80px;
@@ -275,10 +285,10 @@
 <body>
   <div id="header-placeholder"></div>
   <main class="product-detail">
-    <div id="product-container"></div>
+    <div id="product-container" class="fade-in-section"></div>
   </main>
 
-  <footer id="contact">
+  <footer id="contact" class="fade-in-section">
     <div class="footer-content">
       <div class="footer-section">
         <h3>Contactez-nous</h3>
@@ -447,6 +457,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.classList.add('selected');
             });
         });
+
+        // Initialize Intersection Observer for fade-in animation
+        initFadeInAnimations();
     })
     .catch(error => {
         console.error('Error in main DOMContentLoaded sequence:', error);
@@ -506,14 +519,14 @@ function renderProduct(product) {
     productContainer.innerHTML = `
       <div class="product-layout">
         <div class="product-images">
-          <img class="main-image" src="${images[0]}" alt="${product.name}">
+          <img class="main-image" src="${images[0]}" alt="${product.name}" fetchpriority="high">
           <div class="thumbnails" id="thumbnails-container">
             ${images.map((img, index) => `
               <img class="thumbnail ${index === 0 ? 'active' : ''}" 
                    src="${img}" 
                    alt="Thumbnail ${index + 1}"
-                   onclick="changeMainImage('${img}')">
-            `).join('')}
+                   onclick="changeMainImage('${img}')"
+                   loading="lazy">             `).join('')}
           </div>
         </div>
         
@@ -581,6 +594,7 @@ function changeMainImage(src) {
   
   if (mainImage) {
       mainImage.src = src;
+      mainImage.fetchpriority = 'high'; // Prioritize the newly active main image
   }
   
   thumbnails.forEach(thumb => {
@@ -610,6 +624,7 @@ function changeColor(color, images) {
   
   if (mainImage) {
       mainImage.src = images[0];
+      mainImage.fetchpriority = 'high'; // Prioritize the new main image on color change
   }
   
   if (thumbnailsContainer) {
@@ -617,10 +632,32 @@ function changeColor(color, images) {
         <img class="thumbnail ${index === 0 ? 'active' : ''}" 
               src="${img}" 
               alt="Thumbnail ${index + 1}"
-              onclick="changeMainImage('${img}')">
-      `).join('');
+              onclick="changeMainImage('${img}')"
+              loading="lazy">       `).join('');
   }
 }
+
+// Intersection Observer for fade-in animations
+function initFadeInAnimations() {
+  const fadeInSections = document.querySelectorAll('.fade-in-section');
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target); // Stop observing once visible
+      }
+    });
+  }, {
+    threshold: 0.1, // Trigger when 10% of the element is visible
+    rootMargin: '0px 0px -50px 0px' // Start loading slightly before entering viewport
+  });
+
+  fadeInSections.forEach(section => {
+    observer.observe(section);
+  });
+}
+
 
 window.changeMainImage = changeMainImage;
 window.changeColor = changeColor;
