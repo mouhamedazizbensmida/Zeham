@@ -120,7 +120,7 @@
 
     .image-loading-overlay .loader-icon {
         font-size: 3rem;
-        color: #102f68;
+        color: #61666e;
         animation: spin 1s linear infinite;
     }
 
@@ -591,7 +591,7 @@ function renderProduct(product) {
             <div class="image-loading-overlay visible" id="main-image-loader">
                 <i class="fas fa-spinner loader-icon"></i>
             </div>
-               <img class="main-image loading" id="main-product-image" src="${images[0]}" alt="${product.name}" fetchpriority="high">
+               <img class="main-image" id="main-product-image" src="${images[0]}" alt="${product.name}" fetchpriority="high">
                <div class="thumbnails" id="thumbnails-container">
                   ${images.map((img, index) => `
                 <div class="thumbnail-wrapper">
