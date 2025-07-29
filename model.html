@@ -397,42 +397,42 @@
 <script>
       // Product data
 const products = {
-         tshirt1: {
-            name: "T-shirt Zé-Ham Modèle Astronaute",
-            price: "60 dt",
-            description: "T-shirt 100% coton avec un design d'astronaute original.",
-            colors: {
-               blanc: ["assets/images/astrob.webp", "assets/images/astrob1.webp", "assets/images/astrob2.webp"],
-               noir: ["assets/images/astron.webp", "assets/images/astron1.webp", "assets/images/astron2.webp"],
-               gris: ["assets/images/astrog.webp", "assets/images/astrog1.webp", "assets/images/astrog2.webp"]
-            },
-            sizes: ["S", "M", "L", "XL"]
-         },
-         tshirt2: {
-            name: "T-shirt Zé-Ham Modèle Jaww El-Sif",
-            price: "60 dt",
-            description: "T-shirt 100% coton avec un design Jaww El-Sif original.",
-            colors: {
-               blanc: ["assets/images/jawwb.webp", "assets/images/jawwb1.webp", "assets/images/jawwb2.webp"],
-               noir: ["assets/images/jawwn.webp", "assets/images/jawwn1.webp", "assets/images/jawwn2.webp"],
-               gris: ["assets/images/jawwg.webp", "assets/images/jawwg1.webp", "assets/images/jawwg2.webp"]
-            },
-            sizes: ["S", "M", "L", "XL"]
-         },
-         tshirt3: {
-            name: "T-shirt Zé-Ham Modèle Shark",
-            price: "60 dt",
-            description: "T-shirt orné d'un design original Shark, stylé et percutant",
-            colors: {
-               blanc: ["assets/images/sharkb.webp", "assets/images/sharkb1.webp", "assets/images/sharkb2.webp"],
-               noir: ["assets/images/sharkn.webp", "assets/images/sharkn1.webp", "assets/images/sharkn2.webp"],
-               gris: ["assets/images/sharkg.webp", "assets/images/sharkg1.webp", "assets/images/sharkg2.webp"]
-            },
-            sizes: ["S", "M", "L", "XL"]
-         },
+         // tshirt1: {
+         //    name: "T-shirt Zé-Ham Modèle Astronaute",
+         //    price: "60 dt",
+         //    description: "T-shirt 100% coton avec un design d'astronaute original.",
+         //    colors: {
+         //       blanc: ["assets/images/astrob.webp", "assets/images/astrob1.webp", "assets/images/astrob2.webp"],
+         //       noir: ["assets/images/astron.webp", "assets/images/astron1.webp", "assets/images/astron2.webp"],
+         //       gris: ["assets/images/astrog.webp", "assets/images/astrog1.webp", "assets/images/astrog2.webp"]
+         //    },
+         //    sizes: ["S", "M", "L", "XL"]
+         // },
+         // tshirt2: {
+         //    name: "T-shirt Zé-Ham Modèle Jaww El-Sif",
+         //    price: "60 dt",
+         //    description: "T-shirt 100% coton avec un design Jaww El-Sif original.",
+         //    colors: {
+         //       blanc: ["assets/images/jawwb.webp", "assets/images/jawwb1.webp", "assets/images/jawwb2.webp"],
+         //       noir: ["assets/images/jawwn.webp", "assets/images/jawwn1.webp", "assets/images/jawwn2.webp"],
+         //       gris: ["assets/images/jawwg.webp", "assets/images/jawwg1.webp", "assets/images/jawwg2.webp"]
+         //    },
+         //    sizes: ["S", "M", "L", "XL"]
+         // },
+         // tshirt3: {
+         //    name: "T-shirt Zé-Ham Modèle Shark",
+         //    price: "60 dt",
+         //    description: "T-shirt orné d'un design original Shark, stylé et percutant",
+         //    colors: {
+         //       blanc: ["assets/images/sharkb.webp", "assets/images/sharkb1.webp", "assets/images/sharkb2.webp"],
+         //       noir: ["assets/images/sharkn.webp", "assets/images/sharkn1.webp", "assets/images/sharkn2.webp"],
+         //       gris: ["assets/images/sharkg.webp", "assets/images/sharkg1.webp", "assets/images/sharkg2.webp"]
+         //    },
+         //    sizes: ["S", "M", "L", "XL"]
+         // },
          tshirt4: {
             name: "T-shirt Zé-Ham avec logo",
-            price: "60 dt",
+            price: "50 dt",
             description: "T-shirt orné d'un design original Samouraï, élégant et puissant.",
             colors: {
                blanc: ["assets/images/samoraib.webp", "assets/images/samouraib1.webp", "assets/images/samouraib2.webp"],
@@ -443,7 +443,7 @@ const products = {
          }, 
          tshirt5: {
             name: "T-shirt Zé-Ham avec logo",
-            price: "60 dt",
+            price: "50 dt",
             description: "T-shirt illustré d'un Robot stylisé, parfait pour un look urbain et branché.",
             colors: {
                blanc: ["assets/images/robotb.webp", "assets/images/robotb1.webp", "assets/images/robotb2.webp"],
@@ -454,7 +454,7 @@ const products = {
          },
          tshirt6: {
             name: "T-shirt Zé-Ham avec logo",
-            price: "60 dt",
+            price: "50 dt",
             description: "T-shirt minimaliste avec un design 'Erreur 404 - Not Found', parfait pour les amateurs de tech et d'ironie digitale.",
             colors: {
                blanc: ["assets/images/pcb.webp", "assets/images/pcb1.webp", "assets/images/pcb2.webp"],
@@ -463,50 +463,7 @@ const products = {
             },
             sizes: ["S", "M", "L", "XL"]
          },
-         tshirt7: {
-            name: "T-shirt Zé-Ham avec logo",
-            price: "60 dt",
-            description: "T-shirt 100% coton avec le logo Zé-Ham.",
-            colors: {
-               blanc: ["assets/images/robotb.webp", "assets/images/robotb1.webp", "assets/images/robotb2.webp"],
-               noir: ["assets/images/robotn.webp", "assets/images/robotn1.webp", "assets/images/robotn2.webp"],
-               gris: ["assets/images/robotg.webp", "assets/images/robotg1.webp", "assets/images/robotg2.webp"]
-            },
-            sizes: ["S", "M", "L", "XL"]
-         },
-         tshirt8: {
-            name: "T-shirt Zé-Ham avec logo",
-            price: "60 dt",
-            description: "T-shirt 100% coton avec le logo Zé-Ham.",
-            colors: {
-               blanc: ["assets/images/robotb.webp", "assets/images/robotb1.webp", "assets/images/robotb2.webp"],
-               noir: ["assets/images/robotn.webp", "assets/images/robotn1.webp", "assets/images/robotn2.webp"],
-               gris: ["assets/images/robotg.webp", "assets/images/robotg1.webp", "assets/images/robotg2.webp"]
-            },
-            sizes: ["S", "M", "L", "XL"]
-         },
-         tshirt9: {
-            name: "T-shirt Zé-Ham avec logo",
-            price: "60 dt",
-            description: "T-shirt 100% coton avec le logo Zé-Ham.",
-            colors: {
-               blanc: ["assets/images/robotb.webp", "assets/images/robotb1.webp", "assets/images/robotb2.webp"],
-               noir: ["assets/images/robotn.webp", "assets/images/robotn1.webp", "assets/images/robotn2.webp"],
-               gris: ["assets/images/robotg.webp", "assets/images/robotg1.webp", "assets/images/robotg2.webp"]
-            },
-            sizes: ["S", "M", "L", "XL"]
-         },
-         tshirt10: {
-            name: "T-shirt Zé-Ham avec logo",
-            price: "60 dt",
-            description: "T-shirt 100% coton avec le logo Zé-Ham.",
-            colors: {
-               blanc: ["assets/images/robotb.webp", "assets/images/robotb1.webp", "assets/images/robotb2.webp"],
-               noir: ["assets/images/robotn.webp", "assets/images/robotn1.webp", "assets/images/robotn2.webp"],
-               gris: ["assets/images/robotg.webp", "assets/images/robotg1.webp", "assets/images/robotg2.webp"]
-            },
-            sizes: ["S", "M", "L", "XL"]
-         }
+
       };
 // DOM elements
 const headerPlaceholder = document.getElementById('header-placeholder');
